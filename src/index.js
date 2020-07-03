@@ -1,40 +1,45 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState} from 'react'
 import { 
     StatusBar, 
     View, 
+    Text,
     StyleSheet,
-    FlatList,
-    ActivityIndicator
+    TextInput,
+    TouchableOpacity,
 } from 'react-native'
 
-import api from './services/api'
-import Filmes from './Filmes'
+// convert?q=USD_BRL&compact=ultra&apiKey=82ff10a9cdd45201e36f
 
-export default function Main(){
-    const [filmes, setFilmes] = useState('')
-    const [loading, setLoading] = useState(true)
 
-    useEffect(()=>{
-        async function getFilem(){
-            const response = await api.get('rn-api/?api=posts')
-            setFilmes(response.data)
-            setLoading(false)
-        }
-        getFilem()
-    },[])
+export default function Main({moedaA, moedaB}){
+    const [moedaAValue, setMoedaAValue] = useState(0)
+    const [moedaBValue, setMoedaBValue] = useState(0)
+    const [convertedValue, setConvertedValue] = useState(0)
+
+    function toConvert(){
+
+    }
 
     return(
         <View style={styles.container}>
             <StatusBar/>
-            {loading === true ?(
-                <ActivityIndicator color='#09a6ff' size={80} />
-            ):(
-                <FlatList 
-                    keyExtractor={item => item.id.toString()}
-                    data={filmes}
-                    renderItem={({item})=> <Filmes data={item}/>}
-                />
-            )}
+            <Text style={styles.title}>{moedaA} Para {moedaB}</Text>
+            <TextInput 
+                placeholder='Digite o valor'
+                style={styles.input}
+                onChangeText={(moedaBValue)=> setMoedaBValue(moedaBValue)}
+                keyboardType='numeric'
+                placeholderTextColor='#26262688'
+                nderlineColorAndroid='transparent'
+            />
+            <TouchableOpacity 
+                style={styles.btn}
+                onPress={toConvert}
+            >
+                <Text style={styles.btnText}>Converter</Text>
+            </TouchableOpacity>
+
+            <Text style={styles.convertedValue}> {convertedValue.toFixed(2)} </Text>
         </View>
     )
 }
@@ -45,30 +50,40 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 15,
+        backgroundColor: '#ffffee'
+    },
+    title:{
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: '#262626',
     },
     input:{
-        width: '80%',
-        borderWidth: 1,
+        width: 280,
         height: 45,
+        backgroundColor: '#ccc',
+        color: '#262626',
         padding: 5,
-        borderColor: '#262626',
-    },  
+        fontSize: 15,
+        textAlign: 'center',
+        borderRadius: 5,
+    },
     btn:{
-        backgroundColor: '#262626',
-        width: '80%',
+        width: 150,
         height: 45,
+        backgroundColor: '#f26',
         justifyContent: 'center',
-        alignSelf: 'center'
+        alignItems: 'center',
+        margin: 15,
+        borderRadius: 8,
     },
     btnText:{
         fontSize: 20,
         fontWeight: 'bold',
-        textAlign: 'center',
-        color: '#f3f3f3',
+        color: '#f3f3f3'
     },
-    text:{
+    convertedValue:{
         fontSize: 30,
-        textAlign: 'center',
-        marginTop: 15,
+        fontWeight: 'bold',
+        color: '#262626'
     },
 })
