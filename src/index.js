@@ -6,9 +6,12 @@ import {
     StyleSheet,
     TextInput,
     TouchableOpacity,
+    Keyboard
 } from 'react-native'
 
-// convert?q=USD_BRL&compact=ultra&apiKey=82ff10a9cdd45201e36f
+import api from './services/api'
+
+// 
 
 
 export default function Main({moedaA, moedaB}){
@@ -16,8 +19,19 @@ export default function Main({moedaA, moedaB}){
     const [moedaBValue, setMoedaBValue] = useState(0)
     const [convertedValue, setConvertedValue] = useState(0)
 
-    function toConvert(){
-
+    async function toConvert(){
+        let fromTo = `${moedaA}_${moedaB}`
+        const response = await api.get(`/convert?q=${fromTo}&compact=ultra&apiKey=82ff10a9cdd45201e36f`)
+        let quotation = response.data[fromTo]
+        if(moedaBValue !== ''){
+            let conversion = (quotation * parseFloat(moedaBValue))
+            setConvertedValue(conversion)
+    
+            Keyboard.dismiss()
+        }else{
+            alert('Digite um valor!')
+        }
+        
     }
 
     return(
@@ -39,7 +53,11 @@ export default function Main({moedaA, moedaB}){
                 <Text style={styles.btnText}>Converter</Text>
             </TouchableOpacity>
 
-            <Text style={styles.convertedValue}> {convertedValue.toFixed(2)} </Text>
+            {convertedValue === 0?
+                (<Text style={styles.convertedValue}></Text>)
+            :
+                (<Text style={styles.convertedValue}>{convertedValue.toFixed(2)}</Text>)
+            }
         </View>
     )
 }
