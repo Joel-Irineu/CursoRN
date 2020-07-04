@@ -8,13 +8,34 @@ import {
     TouchableOpacity,
     Keyboard,
     Animated,
+    AsyncStorage,
 } from 'react-native'
 
 
 
 export default function Main(){
-    const [nome, setNome] = useState('irineu')
+    const [nome, setNome] = useState('')
     const [input, setInput] = useState('')
+
+
+    useEffect(()=>{
+        async function getStorage(){
+           const nomeStorage = await AsyncStorage.getItem('nomes')
+           if(nomeStorage!==null){
+               setNome(nomeStorage)
+           }
+        }
+
+        getStorage()
+    },[])
+
+    useEffect(()=>{
+        async function saveStorage(){
+            await AsyncStorage.setItem('nomes', nome)
+        }
+
+        saveStorage()
+    },[nome])
     
     function alteraNome(){
         setNome(input)
