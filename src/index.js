@@ -14,55 +14,73 @@ import {
 
 export default function Main(){
     const [largA, setLargA] = useState(new Animated.Value(150))
-    const [altA, setAltA] = useState(new Animated.Value(150))
-    const [opacityA, setOpacityA] = useState(new Animated.Value(1))
+    const [altA, setAltA] = useState(new Animated.Value(0))
+    const [opacityA, setOpacityA] = useState(new Animated.Value(0))
+    const [animation, setAnimation] = useState(false)
 
-    Animated.loop(
-        Animated.parallel([
-            Animated.sequence([
+    function carregar(){
+        if(animation === false){
+            Animated.parallel([
                 Animated.timing(
-                    largA,{
-                        toValue: 300,
+                    altA,{
+                        toValue: 400,
                         duration: 2000,
                         useNativeDriver: false,
                     }
                 ),
-    
                 Animated.timing(
-                    largA,{
-                        toValue: 150,
+                    opacityA,{
+                        toValue: 1,
                         duration: 2000,
                         useNativeDriver: false,
                     }
                 )
-            ]),
+            ]).start()
 
-            Animated.sequence([
+            setAnimation(true)
+
+        }else{
+            Animated.parallel([
                 Animated.timing(
                     altA,{
-                        toValue: 300,
+                        toValue: 0,
                         duration: 2000,
                         useNativeDriver: false,
                     }
                 ),
-    
                 Animated.timing(
-                    altA,{
-                        toValue: 150,
+                    opacityA,{
+                        toValue: 0,
                         duration: 2000,
                         useNativeDriver: false,
                     }
                 )
-            ])
-        ])
-    ).start()
+            ]).start()
+
+            setAnimation(false)
+        }
+    }
     
     return(
         <View style={styles.container}>
             <StatusBar/>
-            <Animated.View style={{width: largA, height: altA, opacity: opacityA, backgroundColor: '#4169e1', justifyContent: 'center'}}>
-                <Text style={styles.title}>Carregando...</Text>
-            </Animated.View>
+            <View style={{height: 80, alignItems: 'center', 
+            justifyContent: 'center', flexDirection: 'row', backgroundColor: '#4169e1'}}>
+                <TouchableOpacity
+                    onPress={carregar}
+                    style={{width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center'}}
+                >
+                    <Text style={{fontSize: 20, color: '#eee'}}>Gerar Grafico</Text>
+                </TouchableOpacity>
+
+            </View>
+            <View style={{flex: 1, flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'center'}}>
+                <Text>Vendas</Text>
+                <Animated.View style={{width: largA, height: altA, backgroundColor: '#4169e1', justifyContent: 'center', opacity: opacityA}}>
+                    <Text style={styles.title}>80%</Text>
+                </Animated.View>
+            </View>
+
         </View>
     )
 }
@@ -70,10 +88,6 @@ export default function Main(){
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: 15,
-        backgroundColor: '#ffffee'
     },
     title:{
         fontSize: 20,
