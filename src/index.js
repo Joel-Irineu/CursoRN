@@ -1,4 +1,4 @@
-import React, { useState, useEffect, } from 'react'
+import React, { useState, useEffect, useMemo, } from 'react'
 import { 
     StatusBar, 
     View, 
@@ -17,6 +17,10 @@ export default function Main(){
     const [nome, setNome] = useState('')
     const [input, setInput] = useState('')
 
+    const letrasNome = useMemo(()=>{
+        console.log('mudou letra')
+        return nome.length
+    },[nome])
 
     useEffect(()=>{
         async function getStorage(){
@@ -46,20 +50,22 @@ export default function Main(){
 
         <View style={styles.container}>
             <StatusBar/>
-                <Text style={styles.title}>{nome}</Text>
+            <Text style={styles.title}>{nome}</Text>
 
-                <TouchableOpacity
-                    style={styles.btn}
-                    onPress={alteraNome}
-                >
-                    <Text style={styles.btnText}>Alterar nome</Text>
-                </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.btn}
+                onPress={alteraNome}
+            >
+                <Text style={styles.btnText}>Alterar nome</Text>
+            </TouchableOpacity>
 
-                <TextInput 
-                    placeholder='seu nome'
-                    value={input}
-                    onChangeText={text => setInput(text)}
-                />
+            <TextInput 
+                placeholder='seu nome'
+                value={input}
+                onChangeText={text => setInput(text)}
+            />
+
+            <Text style={styles.title}> tem {letrasNome} letras</Text>
         </View>
     )
 }
