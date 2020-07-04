@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { 
     StatusBar, 
     View, 
@@ -16,6 +16,7 @@ import {
 export default function Main(){
     const [nome, setNome] = useState('')
     const [input, setInput] = useState('')
+    const nomeInput = useRef(null)
 
     const letrasNome = useMemo(()=>{
         console.log('mudou letra')
@@ -46,6 +47,10 @@ export default function Main(){
         setInput('')
     }
 
+    function novoNome(){
+        nomeInput.current.focus()
+    }
+
     return(
 
         <View style={styles.container}>
@@ -63,9 +68,17 @@ export default function Main(){
                 placeholder='seu nome'
                 value={input}
                 onChangeText={text => setInput(text)}
+                ref={nomeInput}
             />
 
             <Text style={styles.title}> tem {letrasNome} letras</Text>
+        
+            <TouchableOpacity
+                style={styles.btn}
+                onPress={novoNome}
+            >
+                <Text style={styles.btnText}>Novo Nome</Text>
+            </TouchableOpacity>
         </View>
     )
 }
