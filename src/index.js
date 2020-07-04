@@ -13,31 +13,32 @@ import {
 
 
 export default function Main(){
-    const [largA, setLargA] = useState(new Animated.Value(0))
-    const [altA, setAltA] = useState(new Animated.Value(50))
-    const [opacityA, setOpacityA] = useState(new Animated.Value(1))
-    const [animation, setAnimation] = useState(false)
-
-    Animated.timing(
-        largA,{
-            toValue: 100,
-            duration: 5000,
-            useNativeDriver: false
-        }
-    ).start()
+    const [nome, setNome] = useState('irineu')
+    const [input, setInput] = useState('')
     
-    let porcA = largA.interpolate({
-        inputRange: [0, 100],
-        outputRange: ['0%', '100%'],
-    })
+    function alteraNome(){
+        setNome(input)
+        setInput('')
+    }
 
     return(
 
         <View style={styles.container}>
             <StatusBar/>
-            <Animated.View style={{width: porcA, height: altA, backgroundColor: '#4169e1', justifyContent: 'center'}}>
-                <Text style={styles.title}>carregando...</Text>
-            </Animated.View>
+                <Text style={styles.title}>{nome}</Text>
+
+                <TouchableOpacity
+                    style={styles.btn}
+                    onPress={alteraNome}
+                >
+                    <Text style={styles.btnText}>Alterar nome</Text>
+                </TouchableOpacity>
+
+                <TextInput 
+                    placeholder='seu nome'
+                    value={input}
+                    onChangeText={text => setInput(text)}
+                />
         </View>
     )
 }
@@ -46,11 +47,25 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         justifyContent: 'center',
+        alignItems: 'center'
     },
     title:{
-        fontSize: 10,
+        fontSize: 30,
         fontWeight: 'bold',
-        color: '#fff',
+        color: '#262626',
         textAlign: 'center'
+    },
+    btn:{
+        height: 45,
+        width: 100,
+        backgroundColor: '#262626',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 15,
+        borderRadius: 8,
+    },
+    btnText:{
+        color: '#f3f3f3',
+        fontWeight: 'bold'
     }
 })
