@@ -6,26 +6,13 @@ import {
     StyleSheet,
     Button,
 } from 'react-native'
-import {useNavigation} from '@react-navigation/native'
 
-
-export default function Home(){
-    const navigation = useNavigation()
-
-    function toSend(){
-        navigation.navigate('Send')
-    }
+export default function Send({route}){
 
     return(
-
         <View style={styles.container}>
             <StatusBar/>
-            <Text style={styles.title}>Home</Text>
-
-            <Button 
-                title='ir para conversa'
-                onPress={toSend}
-            />
+            <Text style={styles.title}>Send</Text>
         </View>
     )
 }
