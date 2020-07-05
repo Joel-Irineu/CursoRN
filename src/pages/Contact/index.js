@@ -7,24 +7,12 @@ import {
     Button,
 } from 'react-native'
 
-import { useNavigation } from '@react-navigation/native'
-
 export default function Contato({route}){
-    const navigation = useNavigation()
-    const data = route.params
-
-    function toHome(){
-        navigation.navigate('Home')
-    }
 
     return(
         <View style={styles.container}>
             <StatusBar/>
             <Text style={styles.title}>Contato</Text>
-            <Button 
-                title='ir para home'
-                onPress={toHome}
-            />
         </View>
     )
 }
